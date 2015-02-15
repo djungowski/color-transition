@@ -15,3 +15,7 @@ Color.prototype.toRgbaString = function () {
 Color.prototype.toJSON = function () {
   return this._color;
 };
+
+Color.prototype.fadeInto = function (targetColor) {
+  this._color = targetColor;
+};

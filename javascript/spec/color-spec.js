@@ -23,7 +23,32 @@ describe('Color Specs', function () {
 
   describe('#fadeInto', function () {
     it('fades to white in 10s', function() {
-        jasmine.clock().install();
+      var clock = jasmine.clock();
+      clock.install();
+
+      var targetColor = {
+        red: 255,
+        green: 255,
+        blue: 255,
+        alpha: 1
+      };
+
+      var halftimeColor = {
+        red: 128,
+        green: 128,
+        blue: 128,
+        alpha: 1
+      };
+
+      clock.tick(5 * 1000);
+      var actualColor = this.color.toJSON();
+      expect(actualColor.red).toBeCloseTo(halftimeColor.red);
+      expect(actualColor.green).toBeCloseTo(halftimeColor.green);
+      expect(actualColor.blue).toBeCloseTo(halftimeColor.blue);
+
+      this.color.fadeInto(targetColor);
+      clock.tick(5 * 1000);
+      expect(this.color.toJSON()).toEqual(targetColor);
     });
   });
 });
