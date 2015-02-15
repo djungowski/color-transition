@@ -24,15 +24,16 @@ Color.prototype.toJSON = function () {
   return this._color;
 };
 
-Color.prototype.fadeInto = function (targetColor, stepCallback) {
-  var fadeTime = 10 * 1000; // 10s
-  var intervalId;
-
-  var distance = {
+Color.prototype._calculateColorDistance = function (targetColor) {
+  return {
     red: Math.abs(targetColor.red - this._color.red),
     green: Math.abs(targetColor.green - this._color.green),
     blue: Math.abs(targetColor.blue - this._color.blue)
   };
+};
+
+Color.prototype._getTransitionIntervalSize = function (distance) {
+  var fadeTime = 10 * 1000; // 10s
 
   var stepsizeColors = {
     red: Math.floor(fadeTime / distance.red),
@@ -51,7 +52,15 @@ Color.prototype.fadeInto = function (targetColor, stepCallback) {
     }
   }
 
-  var run = 1;
+  return intervalSize;
+};
+
+Color.prototype.fadeInto = function (targetColor, stepCallback) {
+  var intervalId;
+
+  var distance = this._calculateColorDistance(targetColor);
+  var intervalSize = this._getTransitionIntervalSize(distance);
+
   var remainingColors = {
     red: true,
     green: true,
