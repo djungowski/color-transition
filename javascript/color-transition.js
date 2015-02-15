@@ -1,10 +1,10 @@
 window.addEventListener('load', function () {
-  var updateColor = function (color) {
+  var updateBackground = function (color) {
     document.body.style.background = color;
   };
 
   var color = new Color();
-  updateColor(color.toRgbaString());
+  updateBackground(color.toRgbaString());
 
   var targetColor = {
     red: 39,
@@ -13,6 +13,6 @@ window.addEventListener('load', function () {
   };
 
   color.fadeInto(targetColor, function (currentColor) {
-    updateColor(currentColor.toRgbaString());
+    updateBackground(currentColor.toRgbaString());
   });
 });
