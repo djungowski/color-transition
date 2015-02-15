@@ -1,6 +1,6 @@
 describe('Color Specs', function () {
   beforeEach(function() {
-      this.color = new Color();
+    this.color = new Color();
   });
 
   describe('#toRgbaString', function () {
@@ -21,18 +21,18 @@ describe('Color Specs', function () {
   });
 
   describe('#fadeInto', function () {
-    var targetColor = {
-      red: 255,
-      green: 255,
-      blue: 255
-    };
-
     beforeEach(function() {
-        jasmine.clock().install();
+      jasmine.clock().install();
+
+      this.targetColor = {
+        red: 255,
+        green: 255,
+        blue: 255
+      };
     });
 
     afterEach(function() {
-        jasmine.clock().uninstall();
+      jasmine.clock().uninstall();
     });
 
     it('fades to white in 10s', function() {
@@ -42,7 +42,7 @@ describe('Color Specs', function () {
         blue: 128
       };
 
-      this.color.fadeInto(targetColor);
+      this.color.fadeInto(this.targetColor);
 
       jasmine.clock().tick(5 * 1000);
       var actualColor = this.color.toJSON();
@@ -51,7 +51,7 @@ describe('Color Specs', function () {
       expect(actualColor.blue).toBeCloseTo(halftimeColor.blue);
 
       jasmine.clock().tick(5 * 1000);
-      expect(this.color.toJSON()).toEqual(targetColor);
+      expect(this.color.toJSON()).toEqual(this.targetColor);
     });
 
     it('calls the callback for every color increase', function () {
@@ -60,20 +60,36 @@ describe('Color Specs', function () {
       };
       spyOn(mock, 'someCallback');
 
-      this.color.fadeInto(targetColor, mock.someCallback);
+      this.color.fadeInto(this.targetColor, mock.someCallback);
       jasmine.clock().tick(10 * 1000);
-      expect(this.color.toJSON()).toEqual(targetColor);
+      expect(this.color.toJSON()).toEqual(this.targetColor);
       expect(mock.someCallback.calls.count()).toEqual(255);
     });
 
     it('stops the interval', function () {
+      var mock = {
+        someCallback: function() {}
+      };
+      spyOn(mock, 'someCallback');
+
       spyOn(window, 'clearInterval').and.callThrough();
 
-      this.color.fadeInto(targetColor);
+      this.color.fadeInto(this.targetColor, mock.someCallback);
       jasmine.clock().tick(15 * 1000);
-      expect(this.color.toJSON()).toEqual(targetColor);
+      expect(this.color.toJSON()).toEqual(this.targetColor);
       expect(mock.someCallback.calls.count()).toEqual(255);
       expect(window.clearInterval).toHaveBeenCalled();
     });
+
+//    it('fades to turqoise', function () {
+//      var targetColor = {
+//        red: 39,
+//        green: 166,
+//        blue: 176
+//      };
+//      this.color.fadeInto(targetColor);
+//      jasmine.clock().tick(10 * 1000);
+//      expect(this.color.toJSON()).toEqual(targetColor);
+//    })
   });
 });
