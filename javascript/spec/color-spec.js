@@ -21,6 +21,11 @@ describe('Color Specs', function () {
     it('returns black as rgba string', function () {
       expect(this.color.toRgbaString()).toBe('rgba(0, 0, 0, 1)');
     });
+
+    it('returns turqoise as rgba string', function () {
+      this.color = new Color(turqoise);
+      expect(this.color.toRgbaString()).toBe('rgba(39, 166, 176, 1)');
+    });
   });
 
   describe('#toJSON', function() {

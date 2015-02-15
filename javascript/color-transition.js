@@ -13,7 +13,6 @@ window.addEventListener('load', function () {
   };
 
   color.fadeInto(targetColor, function (currentColor) {
-    console.log(currentColor);
-//    updateColor(color.toRgbaString());
+    updateColor(currentColor.toRgbaString());
   });
 });
