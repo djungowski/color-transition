@@ -12,8 +12,8 @@ window.addEventListener('load', function () {
     blue: 176
   };
 
-  color.fadeInto(targetColor, function () {
-    console.log(color.toRgbaString());
-    updateColor(color.toRgbaString());
+  color.fadeInto(targetColor, function (currentColor) {
+    console.log(currentColor);
+//    updateColor(color.toRgbaString());
   });
 });

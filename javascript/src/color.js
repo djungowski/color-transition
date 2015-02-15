@@ -38,11 +38,12 @@ Color.prototype.fadeInto = function (targetColor, stepCallback) {
     if(!stepsizeColors.hasOwnProperty(i)) continue;
 
     var stepsizeColor = stepsizeColors[i];
-    if (stepsizeColor > intervalSize || intervalSize == null) {
+    if (stepsizeColor < intervalSize || intervalSize == null) {
       intervalSize = stepsizeColor;
     }
   }
 
+  var run = 1;
   var remainingColors = {
     red: true,
     green: true,
@@ -72,7 +73,7 @@ Color.prototype.fadeInto = function (targetColor, stepCallback) {
     if (Object.keys(remainingColors).length == 0) {
       window.clearInterval(intervalId);
     } else if (stepCallback != undefined) {
-      stepCallback()
+      stepCallback(me._color);
     }
   }, intervalSize);
 };

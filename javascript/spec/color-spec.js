@@ -66,6 +66,17 @@ describe('Color Specs', function () {
       expect(mock.someCallback.calls.count()).toEqual(255);
     });
 
+    it('calls the callback with the current color', function() {
+      var mock = {
+        someCallback: function() {}
+      };
+      spyOn(mock, 'someCallback');
+
+      this.color.fadeInto(this.targetColor, mock.someCallback);
+      jasmine.clock().tick(39);
+      expect(mock.someCallback).toHaveBeenCalledWith({red: 1, green: 1, blue: 1});
+    });
+
     it('stops the interval', function () {
       var mock = {
         someCallback: function() {}
@@ -81,15 +92,15 @@ describe('Color Specs', function () {
       expect(window.clearInterval).toHaveBeenCalled();
     });
 
-//    it('fades to turqoise', function () {
-//      var targetColor = {
-//        red: 39,
-//        green: 166,
-//        blue: 176
-//      };
-//      this.color.fadeInto(targetColor);
-//      jasmine.clock().tick(10 * 1000);
-//      expect(this.color.toJSON()).toEqual(targetColor);
-//    })
+    it('fades to turqoise', function () {
+      var targetColor = {
+        red: 39,
+        green: 166,
+        blue: 176
+      };
+      this.color.fadeInto(targetColor);
+      jasmine.clock().tick(10 * 1000);
+      expect(this.color.toJSON()).toEqual(targetColor);
+    });
   });
 });
