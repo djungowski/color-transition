@@ -21,15 +21,14 @@ describe('Color Specs', function () {
   });
 
   describe('#fadeInto', function () {
-    it('fades to white in 10s', function() {
-      var clock = jasmine.clock();
-      clock.install();
+    var targetColor = {
+      red: 255,
+      green: 255,
+      blue: 255
+    };
 
-      var targetColor = {
-        red: 255,
-        green: 255,
-        blue: 255
-      };
+    it('fades to white in 10s', function() {
+      jasmine.clock().install();
 
       var halftimeColor = {
         red: 128,
@@ -37,15 +36,27 @@ describe('Color Specs', function () {
         blue: 128
       };
 
-      clock.tick(5 * 1000);
+      this.color.fadeInto(targetColor);
+
+      jasmine.clock().tick(5 * 1000);
       var actualColor = this.color.toJSON();
       expect(actualColor.red).toBeCloseTo(halftimeColor.red);
       expect(actualColor.green).toBeCloseTo(halftimeColor.green);
       expect(actualColor.blue).toBeCloseTo(halftimeColor.blue);
 
-      this.color.fadeInto(targetColor);
-      clock.tick(5 * 1000);
+      jasmine.clock().tick(5 * 1000);
       expect(this.color.toJSON()).toEqual(targetColor);
+
+      jasmine.clock().uninstall();
+    });
+
+    it('stops the interval', function () {
+      jasmine.clock().install();
+      this.color.fadeInto(targetColor);
+      jasmine.clock().tick(15 * 10000);
+      expect(this.color.toJSON()).toEqual(targetColor);
+      expect(this.color.toJSON()).toEqual(targetColor);
+      jasmine.clock().uninstall();
     });
   });
 });
