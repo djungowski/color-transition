@@ -27,9 +27,15 @@ describe('Color Specs', function () {
       blue: 255
     };
 
-    it('fades to white in 10s', function() {
-      jasmine.clock().install();
+    beforeEach(function() {
+        jasmine.clock().install();
+    });
 
+    afterEach(function() {
+        jasmine.clock().uninstall();
+    });
+
+    it('fades to white in 10s', function() {
       var halftimeColor = {
         red: 128,
         green: 128,
@@ -46,17 +52,28 @@ describe('Color Specs', function () {
 
       jasmine.clock().tick(5 * 1000);
       expect(this.color.toJSON()).toEqual(targetColor);
+    });
 
-      jasmine.clock().uninstall();
+    it('calls the callback for every color increase', function () {
+      var mock = {
+        someCallback: function() {}
+      };
+      spyOn(mock, 'someCallback');
+
+      this.color.fadeInto(targetColor, mock.someCallback);
+      jasmine.clock().tick(10 * 1000);
+      expect(this.color.toJSON()).toEqual(targetColor);
+      expect(mock.someCallback.calls.count()).toEqual(255);
     });
 
     it('stops the interval', function () {
-      jasmine.clock().install();
+      spyOn(window, 'clearInterval').and.callThrough();
+
       this.color.fadeInto(targetColor);
-      jasmine.clock().tick(15 * 10000);
+      jasmine.clock().tick(15 * 1000);
       expect(this.color.toJSON()).toEqual(targetColor);
-      expect(this.color.toJSON()).toEqual(targetColor);
-      jasmine.clock().uninstall();
+      expect(mock.someCallback.calls.count()).toEqual(255);
+      expect(window.clearInterval).toHaveBeenCalled();
     });
   });
 });

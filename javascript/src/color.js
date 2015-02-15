@@ -17,7 +17,7 @@ Color.prototype.toJSON = function () {
   return this._color;
 };
 
-Color.prototype.fadeInto = function (targetColor) {
+Color.prototype.fadeInto = function (targetColor, stepCallback) {
   var fadeTime = 10 * 1000; // 10s
   var intervalId;
 
@@ -50,6 +50,8 @@ Color.prototype.fadeInto = function (targetColor) {
     blue: true
   };
 
+  console.log(Object.keys(remainingColors).length);
+
   var me = this;
   intervalId = window.setInterval(function () {
     if (remainingColors.red != undefined && me._color.red != targetColor.red) {
@@ -68,6 +70,12 @@ Color.prototype.fadeInto = function (targetColor) {
       me._color.blue += 1;
     } else {
       delete remainingColors.blue;
+    }
+
+    if (Object.keys(remainingColors).length > 0 && stepCallback != undefined) {
+      stepCallback();
+    } else {
+      window.clearInterval(intervalId);
     }
   }, intervalSize);
 };
