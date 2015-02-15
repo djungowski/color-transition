@@ -67,25 +67,20 @@ Color.prototype.fadeInto = function (targetColor, stepCallback) {
     blue: true
   };
 
+  var updateChannel = function (color) {
+    if (me._color[color] != targetColor[color]) {
+      me._color[color] += 1;
+    } else {
+      delete remainingColors[color];
+    }
+  };
+
   var me = this;
   intervalId = window.setInterval(function () {
-    if (me._color.red != targetColor.red) {
-      me._color.red += 1;
-    } else {
-      delete remainingColors.red;
-    }
+    updateChannel('red');
+    updateChannel('green');
+    updateChannel('blue');
 
-    if (me._color.green != targetColor.green) {
-      me._color.green += 1;
-    } else {
-      delete remainingColors.green;
-    }
-
-    if (me._color.blue != targetColor.blue) {
-      me._color.blue += 1;
-    } else {
-      delete remainingColors.blue;
-    }
 
     if (Object.keys(remainingColors).length == 0) {
       window.clearInterval(intervalId);
