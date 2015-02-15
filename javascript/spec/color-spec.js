@@ -14,8 +14,7 @@ describe('Color Specs', function () {
         var expectedColor = {
           red: 0,
           green: 0,
-          blue: 0,
-          alpha: 1
+          blue: 0
         };
         expect(this.color.toJSON()).toEqual(expectedColor);
       });
@@ -29,15 +28,13 @@ describe('Color Specs', function () {
       var targetColor = {
         red: 255,
         green: 255,
-        blue: 255,
-        alpha: 1
+        blue: 255
       };
 
       var halftimeColor = {
         red: 128,
         green: 128,
-        blue: 128,
-        alpha: 1
+        blue: 128
       };
 
       clock.tick(5 * 1000);
