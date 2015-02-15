@@ -1,8 +1,16 @@
-var Color = function () {
-  this._color = {
-    red: 0,
-    green: 0,
-    blue: 0
+var Color = function (color) {
+  if (color == undefined) {
+    this._color = {
+      red: 0,
+      green: 0,
+      blue: 0
+    }
+  } else {
+    this._color = {
+      red: color.red,
+      green: color.green,
+      blue: color.blue
+    };
   }
 };
 
@@ -73,7 +81,8 @@ Color.prototype.fadeInto = function (targetColor, stepCallback) {
     if (Object.keys(remainingColors).length == 0) {
       window.clearInterval(intervalId);
     } else if (stepCallback != undefined) {
-      stepCallback(me._color);
+      var currentColor = new Color(me._color);
+      stepCallback(currentColor);
     }
   }, intervalSize);
 };

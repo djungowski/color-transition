@@ -1,6 +1,20 @@
 describe('Color Specs', function () {
+  var turqoise = {
+    red: 39,
+    green: 166,
+    blue: 176
+  };
+
+
   beforeEach(function() {
     this.color = new Color();
+  });
+
+  describe('Creation', function () {
+    it('can be called with arguments', function() {
+      this.color = new Color(turqoise);
+      expect(this.color.toJSON()).toEqual(turqoise);
+    });
   });
 
   describe('#toRgbaString', function () {
@@ -74,7 +88,13 @@ describe('Color Specs', function () {
 
       this.color.fadeInto(this.targetColor, mock.someCallback);
       jasmine.clock().tick(39);
-      expect(mock.someCallback).toHaveBeenCalledWith({red: 1, green: 1, blue: 1});
+
+      var expectedParam = new Color({
+        red: 1,
+        green: 1,
+        blue: 1
+      });
+      expect(mock.someCallback).toHaveBeenCalledWith(expectedParam);
     });
 
     it('stops the interval', function () {
@@ -93,14 +113,9 @@ describe('Color Specs', function () {
     });
 
     it('fades to turqoise', function () {
-      var targetColor = {
-        red: 39,
-        green: 166,
-        blue: 176
-      };
-      this.color.fadeInto(targetColor);
+      this.color.fadeInto(turqoise);
       jasmine.clock().tick(10 * 1000);
-      expect(this.color.toJSON()).toEqual(targetColor);
+      expect(this.color.toJSON()).toEqual(turqoise);
     });
   });
 });
