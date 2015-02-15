@@ -56,12 +56,13 @@ Color.prototype._getTransitionIntervalSize = function (distance) {
 };
 
 Color.prototype.fadeInto = function (targetColor, stepCallback) {
+  var me = this;
   var intervalId;
 
   var distance = this._calculateColorDistance(targetColor);
   var intervalSize = this._getTransitionIntervalSize(distance);
 
-  var remainingColors = {
+  var remainingChannels = {
     red: true,
     green: true,
     blue: true
@@ -71,22 +72,23 @@ Color.prototype.fadeInto = function (targetColor, stepCallback) {
     if (me._color[color] != targetColor[color]) {
       me._color[color] += 1;
     } else {
-      delete remainingColors[color];
+      delete remainingChannels[color];
     }
   };
 
-  var me = this;
-  intervalId = window.setInterval(function () {
+  var intervalUpdate = function () {
     updateChannel('red');
     updateChannel('green');
     updateChannel('blue');
 
-
-    if (Object.keys(remainingColors).length == 0) {
+    var remainingChannelsLength = Object.keys(remainingChannels).length;
+    if (remainingChannelsLength == 0) {
       window.clearInterval(intervalId);
     } else if (stepCallback != undefined) {
       var currentColor = new Color(me._color);
       stepCallback(currentColor);
     }
-  }, intervalSize);
+  };
+
+  intervalId = window.setInterval(intervalUpdate, intervalSize);
 };
