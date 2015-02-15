@@ -11,3 +11,7 @@ Color.prototype._color = {
 Color.prototype.toRgbaString = function () {
   return 'rgba('+ this._color.red +', '+ this._color.red +', '+ this._color.red +', '+ this._color.alpha + ')';
 };
+
+Color.prototype.toJSON = function () {
+  return this._color;
+};
