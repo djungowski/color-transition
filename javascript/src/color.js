@@ -26,19 +26,19 @@ Color.prototype.toJSON = function () {
 
 Color.prototype._calculateColorDistance = function (targetColor) {
   return {
-    red: Math.abs(targetColor.red - this._color.red),
-    green: Math.abs(targetColor.green - this._color.green),
-    blue: Math.abs(targetColor.blue - this._color.blue)
+    red: targetColor.red - this._color.red,
+    green: targetColor.green - this._color.green,
+    blue: targetColor.blue - this._color.blue
   };
 };
 
 Color.prototype._getTransitionIntervalSize = function (distance) {
-  var fadeTime = 10 * 1000; // 10s
+  var fadeTime = 2 * 1000; // 10s
 
   var stepsizeColors = {
-    red: Math.floor(fadeTime / distance.red),
-    green: Math.floor(fadeTime / distance.green),
-    blue: Math.floor(fadeTime / distance.blue)
+    red: Math.floor(fadeTime / Math.abs(distance.red)),
+    green: Math.floor(fadeTime / Math.abs(distance.green)),
+    blue: Math.floor(fadeTime / Math.abs(distance.blue))
   };
 
   var intervalSize = null;
@@ -68,11 +68,14 @@ Color.prototype.fadeInto = function (targetColor, stepCallback) {
     blue: true
   };
 
-  var updateChannel = function (color) {
-    if (me._color[color] != targetColor[color]) {
-      me._color[color] += 1;
+  var updateChannel = function (channelName) {
+    var channel = me._color[channelName];
+    var summand = (distance[channelName] < 0) ? -1 : 1;
+
+    if (channel != targetColor[channelName]) {
+      me._color[channelName] += summand;
     } else {
-      delete remainingChannels[color];
+      delete remainingChannels[channelName];
     }
   };
 

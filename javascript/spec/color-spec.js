@@ -5,6 +5,12 @@ describe('Color Specs', function () {
     blue: 176
   };
 
+  var red = {
+    red: 255,
+    green: 0,
+    blue: 0
+  };
+
 
   beforeEach(function() {
     this.color = new Color();
@@ -55,21 +61,22 @@ describe('Color Specs', function () {
     });
 
     it('fades to white in 10s', function() {
+      // very ungenau
       var halftimeColor = {
-        red: 128,
-        green: 128,
-        blue: 128
+        red: 142,
+        green: 142,
+        blue: 142
       };
 
       this.color.fadeInto(this.targetColor);
 
-      jasmine.clock().tick(5 * 1000);
+      jasmine.clock().tick(1000);
       var actualColor = this.color.toJSON();
-      expect(actualColor.red).toBeCloseTo(halftimeColor.red);
-      expect(actualColor.green).toBeCloseTo(halftimeColor.green);
-      expect(actualColor.blue).toBeCloseTo(halftimeColor.blue);
+      expect(actualColor.red).toBe(halftimeColor.red);
+      expect(actualColor.green).toBe(halftimeColor.green);
+      expect(actualColor.blue).toBe(halftimeColor.blue);
 
-      jasmine.clock().tick(5 * 1000);
+      jasmine.clock().tick(1000);
       expect(this.color.toJSON()).toEqual(this.targetColor);
     });
 
@@ -118,6 +125,13 @@ describe('Color Specs', function () {
     });
 
     it('fades to turqoise', function () {
+      this.color.fadeInto(turqoise);
+      jasmine.clock().tick(10 * 1000);
+      expect(this.color.toJSON()).toEqual(turqoise);
+    });
+
+    it('fades from red to turqoise', function () {
+      this.color = new Color(red);
       this.color.fadeInto(turqoise);
       jasmine.clock().tick(10 * 1000);
       expect(this.color.toJSON()).toEqual(turqoise);
