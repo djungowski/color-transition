@@ -60,11 +60,20 @@ Color.prototype.fadeInto = function (targetColor, duration, stepCallback) {
 	this.startColorInterval('blue', targetColor, duration, stepCallback);
 };
 
+Color.prototype.updateChannel = function (channelName, channelValue) {
+	this._color[channelName] = channelValue;
+};
+
 Color.prototype.startColorInterval = function (channelName, targetColor, duration, stepCallback) {
 	var me = this;
 	var intervalId;
 	var distance = this._calculateColorDistance(targetColor);
 	var intervalSize = this._getTransitionIntervalSize(distance, duration);
+
+	if (intervalSize[channelName] == 0) {
+		this.updateChannel(channelName, targetColor[channelName]);
+		return;
+	}
 
 	var updateChannel = function (channelName) {
 		var channel = me._color[channelName];

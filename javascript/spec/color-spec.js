@@ -159,5 +159,46 @@ describe('Color Specs', function () {
 			jasmine.clock().tick(10 * 1000);
 			expect(this.color.toJSON()).toEqual(colorTurqoise.toJSON());
 		});
+
+		it('fades to turqoise instantly', function () {
+			var color = new Color();
+			color.fadeInto(colorTurqoise, 0);
+			expect(color.toJSON()).toEqual(colorTurqoise.toJSON());
+		});
+	});
+
+	describe('#updateChannel()', function () {
+		it('updates channel red', function () {
+			var targetColor = {
+				red: 255,
+				green: 0,
+				blue: 0
+			};
+			var color = new Color();
+			color.updateChannel('red', 255);
+			expect(color.toJSON()).toEqual(targetColor);
+		});
+
+		it('updates channel green', function () {
+			var targetColor = {
+				red: 0,
+				green: 255,
+				blue: 0
+			};
+			var color = new Color();
+			color.updateChannel('green', 255);
+			expect(color.toJSON()).toEqual(targetColor);
+		});
+
+		it('updates channel blue', function () {
+			var targetColor = {
+				red: 0,
+				green: 0,
+				blue: 255
+			};
+			var color = new Color();
+			color.updateChannel('blue', 255);
+			expect(color.toJSON()).toEqual(targetColor);
+		});
 	});
 });
