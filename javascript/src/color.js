@@ -32,11 +32,19 @@ Color.prototype._calculateColorDistance = function (targetColor) {
 	};
 };
 
+Color.prototype._getTransitionIntervalSizeForChannel = function (channelName, distance, duration) {
+	var colorDistance = Math.abs(distance[channelName]);
+	if (colorDistance == 0) {
+		return 0;
+	}
+	return Math.floor(duration / colorDistance);
+};
+
 Color.prototype._getTransitionIntervalSize = function (distance, duration) {
 	return {
-		red: Math.floor(duration / Math.abs(distance.red)),
-		green: Math.floor(duration / Math.abs(distance.green)),
-		blue: Math.floor(duration / Math.abs(distance.blue))
+		red: this._getTransitionIntervalSizeForChannel('red', distance, duration),
+		green: this._getTransitionIntervalSizeForChannel('green', distance, duration),
+		blue: this._getTransitionIntervalSizeForChannel('blue', distance, duration)
 	};
 };
 
