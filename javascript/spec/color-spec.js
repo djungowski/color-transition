@@ -89,7 +89,7 @@ describe('Color Specs', function () {
       this.color.fadeInto(this.targetColor, mock.someCallback);
       jasmine.clock().tick(10 * 1000);
       expect(this.color.toJSON()).toEqual(this.targetColor);
-      expect(mock.someCallback.calls.count()).toEqual(255);
+      expect(mock.someCallback.calls.count()).toEqual(768);
     });
 
     it('calls the callback with the current color', function() {
@@ -120,7 +120,7 @@ describe('Color Specs', function () {
       this.color.fadeInto(this.targetColor, mock.someCallback);
       jasmine.clock().tick(15 * 1000);
       expect(this.color.toJSON()).toEqual(this.targetColor);
-      expect(mock.someCallback.calls.count()).toEqual(255);
+      expect(mock.someCallback.calls.count()).toEqual(768);
       expect(window.clearInterval).toHaveBeenCalled();
     });
 
