@@ -32,29 +32,31 @@ Color.prototype._calculateColorDistance = function (targetColor) {
 	};
 };
 
-Color.prototype._getTransitionIntervalSize = function (distance) {
-	var fadeTime = 2 * 1000; // 10s
-
+Color.prototype._getTransitionIntervalSize = function (distance, duration) {
 	return {
-		red: Math.floor(fadeTime / Math.abs(distance.red)),
-		green: Math.floor(fadeTime / Math.abs(distance.green)),
-		blue: Math.floor(fadeTime / Math.abs(distance.blue))
+		red: Math.floor(duration / Math.abs(distance.red)),
+		green: Math.floor(duration / Math.abs(distance.green)),
+		blue: Math.floor(duration / Math.abs(distance.blue))
 	};
 };
 
-Color.prototype.fadeInto = function (targetColor, stepCallback) {
+Color.prototype.fadeInto = function (targetColor, duration, stepCallback) {
 	targetColor = targetColor.toJSON();
 
-	this.startColorInterval('red', targetColor, stepCallback);
-	this.startColorInterval('green', targetColor, stepCallback);
-	this.startColorInterval('blue', targetColor, stepCallback);
+	if (duration == null || duration == undefined) {
+		duration = 2 * 1000; // 10s
+	}
+
+	this.startColorInterval('red', targetColor, duration, stepCallback);
+	this.startColorInterval('green', targetColor, duration, stepCallback);
+	this.startColorInterval('blue', targetColor, duration, stepCallback);
 };
 
-Color.prototype.startColorInterval = function (channelName, targetColor, stepCallback) {
+Color.prototype.startColorInterval = function (channelName, targetColor, duration, stepCallback) {
 	var me = this;
 	var intervalId;
 	var distance = this._calculateColorDistance(targetColor);
-	var intervalSize = this._getTransitionIntervalSize(distance);
+	var intervalSize = this._getTransitionIntervalSize(distance, duration);
 
 	var updateChannel = function (channelName) {
 		var channel = me._color[channelName];

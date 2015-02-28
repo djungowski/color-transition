@@ -70,7 +70,7 @@ describe('Color Specs', function () {
 			jasmine.clock().uninstall();
 		});
 
-		it('fades to white in 10s', function () {
+		it('fades to white in 2s', function () {
 			// very ungenau
 			var halftimeColor = {
 				red: 142,
@@ -90,6 +90,12 @@ describe('Color Specs', function () {
 			expect(this.color.toJSON()).toEqual(this.targetColor.toJSON());
 		});
 
+		it ('fades to white in 1s', function () {
+			this.color.fadeInto(this.targetColor, 1);
+			jasmine.clock().tick(1000);
+			expect(this.color.toJSON()).toEqual(this.targetColor.toJSON());
+		});
+
 		it('calls the callback for every color increase', function () {
 			var mock = {
 				someCallback: function () {
@@ -97,7 +103,7 @@ describe('Color Specs', function () {
 			};
 			spyOn(mock, 'someCallback');
 
-			this.color.fadeInto(this.targetColor, mock.someCallback);
+			this.color.fadeInto(this.targetColor, null, mock.someCallback);
 			jasmine.clock().tick(10 * 1000);
 			expect(this.color.toJSON()).toEqual(this.targetColor.toJSON());
 			expect(mock.someCallback.calls.count()).toEqual(768);
@@ -110,7 +116,7 @@ describe('Color Specs', function () {
 			};
 			spyOn(mock, 'someCallback');
 
-			this.color.fadeInto(this.targetColor, mock.someCallback);
+			this.color.fadeInto(this.targetColor, null, mock.someCallback);
 			jasmine.clock().tick(39);
 
 			var expectedParam = new Color({
@@ -130,7 +136,7 @@ describe('Color Specs', function () {
 
 			spyOn(window, 'clearInterval').and.callThrough();
 
-			this.color.fadeInto(this.targetColor, mock.someCallback);
+			this.color.fadeInto(this.targetColor, null, mock.someCallback);
 			jasmine.clock().tick(15 * 1000);
 			expect(this.color.toJSON()).toEqual(this.targetColor.toJSON());
 			expect(mock.someCallback.calls.count()).toEqual(768);
