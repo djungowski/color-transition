@@ -7,9 +7,9 @@ var Color = function (color) {
 		}
 	} else {
 		this._color = {
-			red: color.red,
-			green: color.green,
-			blue: color.blue
+			red: parseInt(color.red),
+			green: parseInt(color.green),
+			blue: parseInt(color.blue)
 		};
 	}
 };
@@ -40,34 +40,17 @@ Color.prototype._getTransitionIntervalSize = function (distance) {
 		green: Math.floor(fadeTime / Math.abs(distance.green)),
 		blue: Math.floor(fadeTime / Math.abs(distance.blue))
 	};
-
-//	var intervalSize = null;
-//
-//	for (var i in stepsizeColors) {
-//		if (!stepsizeColors.hasOwnProperty(i)) continue;
-//
-//		var stepsizeColor = stepsizeColors[i];
-//		if (stepsizeColor < intervalSize || intervalSize == null) {
-//			intervalSize = stepsizeColor;
-//		}
-//	}
-//
-//	return intervalSize;
 };
 
 Color.prototype.fadeInto = function (targetColor, stepCallback) {
-	var remainingChannels = {
-		red: true,
-		green: true,
-		blue: true
-	};
+	targetColor = targetColor.toJSON();
 
 	this.startColorInterval('red', targetColor, stepCallback);
 	this.startColorInterval('green', targetColor, stepCallback);
 	this.startColorInterval('blue', targetColor, stepCallback);
 };
 
-Color.prototype.startColorInterval = function (color, targetColor, stepCallback) {
+Color.prototype.startColorInterval = function (channelName, targetColor, stepCallback) {
 	var me = this;
 	var intervalId;
 	var distance = this._calculateColorDistance(targetColor);
@@ -77,7 +60,7 @@ Color.prototype.startColorInterval = function (color, targetColor, stepCallback)
 		var channel = me._color[channelName];
 		var summand = (distance[channelName] < 0) ? -1 : 1;
 
-		if (channel != targetColor[color]) {
+		if (channel != targetColor[channelName]) {
 			me._color[channelName] += summand;
 		} else {
 			window.clearInterval(intervalId);
@@ -85,7 +68,7 @@ Color.prototype.startColorInterval = function (color, targetColor, stepCallback)
 	};
 
 	var intervalUpdate = function () {
-		updateChannel(color);
+		updateChannel(channelName);
 
 		if (stepCallback != undefined) {
 			var currentColor = new Color(me._color);
@@ -93,5 +76,5 @@ Color.prototype.startColorInterval = function (color, targetColor, stepCallback)
 		}
 	};
 
-	intervalId = window.setInterval(intervalUpdate, intervalSize[color]);
+	intervalId = window.setInterval(intervalUpdate, intervalSize[channelName]);
 };

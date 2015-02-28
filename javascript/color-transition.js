@@ -1,27 +1,31 @@
 window.addEventListener('load', function () {
+	var colorForm = document.getElementById('color');
+	var red = document.getElementById('red');
+	var green = document.getElementById('green');
+	var blue = document.getElementById('blue');
+
+	var getColorFromForm = function () {
+		var currentColor = {
+			red: red.value,
+			green: green.value,
+			blue: blue.value
+		};
+		return new Color(currentColor);
+	};
+
 	var updateBackground = function (color) {
 		document.body.style.background = color;
 	};
 
-	var turqoise = {
-		red: 39,
-		green: 166,
-		blue: 176
-	};
-
-	var red = {
-		red: 255,
-		green: 0,
-		blue: 0
-	};
-
-	var color = new Color(red);
-	var targetColor = turqoise;
-
+	var color = new getColorFromForm();
 	updateBackground(color.toRgbaString());
 
-	color.fadeInto(targetColor, function (currentColor) {
-		console.log(currentColor.toRgbaString());
-		updateBackground(currentColor.toRgbaString());
+	colorForm.addEventListener('submit', function (event) {
+		event.preventDefault();
+		var targetColor = getColorFromForm();
+		color.fadeInto(targetColor, function (currentColor) {
+			console.log(currentColor.toRgbaString());
+			updateBackground(currentColor.toRgbaString());
+		});
 	});
 });
