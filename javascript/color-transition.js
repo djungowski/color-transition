@@ -15,8 +15,8 @@ window.addEventListener('load', function () {
 		blue: 0
 	};
 
-	var color = new Color(turqoise);
-	var targetColor = red;
+	var color = new Color(red);
+	var targetColor = turqoise;
 
 	updateBackground(color.toRgbaString());
 
